@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Todo } from "../entities/Todo";
 
 export default function NewTodo() {
   const [data, setData] = useState([]);
@@ -23,7 +24,7 @@ export default function NewTodo() {
     };
 
     fetchData();
-  }, []);
+  }, [apiUrl]);
 
   return (
     <div>
