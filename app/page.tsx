@@ -8,15 +8,15 @@ import { Trash } from "lucide-react";
 
 const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
-const theme = {
+const deleteTodoIcon = {
   color: "red",
   cursor: "pointer",
 };
 
 export default function NewTodo() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Todo[]>([]);
   const [pending, setPending] = useState(true);
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState<Todo[]>([]);
 
   const deleteAllButtonTheme = {
     backgroundColor: "red",
@@ -24,7 +24,6 @@ export default function NewTodo() {
     padding: "10px 10px",
     borderRadius: "5px",
     cursor: "pointer",
-    visibility: selectedRows.length ? "visible" : "hidden",
   };
 
   const columns = [
@@ -44,7 +43,7 @@ export default function NewTodo() {
       cell: (row: Todo) => {
         return (
           <Trash
-            style={theme}
+            style={deleteTodoIcon}
             onClick={() => {
               deleteTodo(row);
             }}
@@ -80,7 +79,7 @@ export default function NewTodo() {
     deleteSelectedTodos(selectedRows);
   }
 
-  async function handleSelectedRowsChanged({ selectedRows }) {
+  async function handleSelectedRowsChanged(selectedRows: Todo[]) {
     setSelectedRows(selectedRows);
   }
 
@@ -112,13 +111,17 @@ export default function NewTodo() {
         highlightOnHover
         progressComponent={<div>Loading items...</div>}
         progressPending={pending}
-        onSelectedRowsChange={handleSelectedRowsChanged}
+        onSelectedRowsChange={(rows) =>
+          handleSelectedRowsChanged(rows.selectedRows)
+        }
       />
-      <button
-        style={deleteAllButtonTheme}
-        onClick={handleDeleteSelectedTodosClicked}>
-        Delete All Selected
-      </button>
+      {selectedRows.length > 0 && (
+        <button
+          style={deleteAllButtonTheme}
+          onClick={handleDeleteSelectedTodosClicked}>
+          Delete All Selected
+        </button>
+      )}
     </div>
   );
 }
