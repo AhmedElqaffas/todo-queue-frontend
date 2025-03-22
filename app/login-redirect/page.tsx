@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 
-const apiUrl = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
+const apiUrl = process.env.NEXT_PUBLIC_GATEWAY_URL;
 
 export default function Redirect() {
   const getJWTFromCognitoCode = async () => {
@@ -15,7 +15,6 @@ export default function Redirect() {
         })
       );
       localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
     } catch (error) {
       console.error("Login error:", error);
     }
