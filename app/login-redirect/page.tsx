@@ -8,12 +8,11 @@ const apiUrl = process.env.NEXT_PUBLIC_GATEWAY_URL;
 export default function Redirect() {
   const getJWTFromCognitoCode = async () => {
     try {
-      const response = await axios.post(
-        `${apiUrl}auth/token?`,
-        new URLSearchParams({
+      const response = await axios.get(`${apiUrl}auth/token?`, {
+        params: {
           code: window.location.search.split("=")[1],
-        })
-      );
+        },
+      });
       localStorage.setItem("accessToken", response.data.accessToken);
     } catch (error) {
       console.error("Login error:", error);
