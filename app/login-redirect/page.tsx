@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useEffect } from "react";
+import { Tokens } from "../value_objects/Tokens";
 
 const apiUrl = process.env.NEXT_PUBLIC_GATEWAY_URL;
 
@@ -13,7 +14,12 @@ export default function Redirect() {
           code: window.location.search.split("=")[1],
         },
       });
-      localStorage.setItem("accessToken", response.data.accessToken);
+      const tokens: Tokens = {
+        idToken: response.data.id_token,
+        accessToken: response.data.access_token,
+        refreshToken: response.data.refresh_token,
+      };
+      localStorage.setItem("tokens", JSON.stringify(tokens));
     } catch (error) {
       console.error("Login error:", error);
     }

@@ -8,6 +8,7 @@ import { Trash } from "lucide-react";
 import CreateTodoModal from "./new/CreateTodoModal";
 import axios, { AxiosError } from "axios";
 import { redirect } from "next/navigation";
+import { Tokens } from "./value_objects/Tokens";
 const apiUrl = process.env.NEXT_PUBLIC_GATEWAY_URL;
 
 const deleteTodoIcon = {
@@ -75,7 +76,8 @@ export default function NewTodo() {
   async function deleteSelectedTodos(todos: Todo[]) {
     setPending(true);
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      const tokens = localStorage.getItem("tokens");
+      const accessToken = tokens ? (JSON.parse(tokens) as Tokens).accessToken : null;
       const response = await fetch(`${apiUrl}todo/remove`, {
         method: "POST",
         body: JSON.stringify(todos.map((todo: Todo) => todo.id)),
