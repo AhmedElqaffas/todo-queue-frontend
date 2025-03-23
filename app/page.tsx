@@ -77,7 +77,9 @@ export default function NewTodo() {
     setPending(true);
     try {
       const tokens = localStorage.getItem("tokens");
-      const accessToken = tokens ? (JSON.parse(tokens) as Tokens).accessToken : null;
+      const accessToken = tokens
+        ? (JSON.parse(tokens) as Tokens).accessToken
+        : null;
       const response = await fetch(`${apiUrl}todo/remove`, {
         method: "POST",
         body: JSON.stringify(todos.map((todo: Todo) => todo.id)),
@@ -109,7 +111,10 @@ export default function NewTodo() {
     try {
       // if text is undefined, then user dismissed the dialog without clicking create button
       if (text) {
-        const accessToken = localStorage.getItem("accessToken");
+        const tokens = localStorage.getItem("tokens");
+        const accessToken = tokens
+          ? (JSON.parse(tokens) as Tokens).accessToken
+          : null;
         const response = await fetch(`${apiUrl}todo/new`, {
           method: "POST",
           body: JSON.stringify({ text: text }),
@@ -138,13 +143,16 @@ export default function NewTodo() {
     );
     const fetchData = async () => {
       try {
-        const accessToken = localStorage.getItem("accessToken");
+        const tokens = localStorage.getItem("tokens");
+        const accessToken = tokens
+          ? (JSON.parse(tokens) as Tokens).accessToken
+          : null;
         const response = await axios.get(`${apiUrl}todo/all`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        setData(response.data);
+        setData(response.data.collection); // krakend returns the collection in a collection object
       } catch (error: unknown) {
         console.error(error);
         // check if axios error is 401
