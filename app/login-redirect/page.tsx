@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { Tokens } from "../value_objects/Tokens";
+import { redirect } from "next/navigation";
 
 const apiUrl = process.env.NEXT_PUBLIC_GATEWAY_URL;
 
@@ -22,6 +23,8 @@ export default function Redirect() {
       localStorage.setItem("tokens", JSON.stringify(tokens));
     } catch (error) {
       console.error("Login error:", error);
+    } finally {
+      redirect("/"); // Redirect to the home page
     }
   };
 
